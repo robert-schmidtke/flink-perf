@@ -26,6 +26,8 @@ import java.util.regex.Pattern;
 public class GrepJob {
 
 	public static void main(final String[] args) throws Exception {
+		long start = System.nanoTime();
+
 		// set up the execution environment
 		final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 		String in = args[0];
@@ -72,7 +74,10 @@ public class GrepJob {
 
 		// execute program
 		JobExecutionResult jobResult = env.execute("Flink Grep benchmark");
+		long duration = System.nanoTime() - start;
+		
 		System.err.println(AccumulatorHelper.getResultsFormated(jobResult.getAllAccumulatorResults()));
+		System.err.println("Runtime: " + (duration / 1000000) + "/" + jobResult.getNetRuntime() + "ms");
 	}
 
 /*
